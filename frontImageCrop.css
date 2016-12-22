@@ -25,4 +25,4 @@ div.fic-img>canvas{position: relative;top: -25px;}
 div.fic-img>div.fic-input>input[type="file"]{display: block;position: absolute;top: 38px;left: 0;width: 300px;height: 400px;font-size: 100px; /* 增大不同浏览器的可点击区域 */ opacity: 0; /* 实现的关键点 */ filter:alpha(opacity=0);/* 兼容IE */cursor:pointer;}
 div.fic-img>div.fic-input>p{position:relative;top:150px;text-align:center;font-size:20px;}
 div.fic-img>div.fic-input>p>b{background: #ccc;border-radius: 50%;padding: 0px 4px 3px 4px;margin: 0px 4px;color: #fff;}
-#fic-iUpcav{position:absolute;left:0px;top:0px;cursor: move;}
+#fic-iUpcav{display:none;position:absolute;left:0px;top:0px;cursor: move;}
