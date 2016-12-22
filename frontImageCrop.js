@@ -74,7 +74,7 @@ fontImageCrop.prototype = {
     readFile: function(){
         var self = this;
         self.ficInput = document.getElementById("fic-upimg");
-        self.ficImage = document.getElementById("ficImage");
+        //self.ficImage = document.getElementById("ficImage");
         if(typeof FileReader==='undefined'){ 
 		    alert("抱歉，你的浏览器不支持 FileReader"); 
 		    input.setAttribute('disabled','disabled'); 
@@ -106,6 +106,8 @@ fontImageCrop.prototype = {
         ctx.fillRect(0, 0, 300, 400);
         //绘制顶部图片
         self.drawCanvasUpImg();
+        //缩放监测
+        self.scrollScale();
     },
     drawCanvasUpImg: function(){
         var self = this;
@@ -161,5 +163,11 @@ fontImageCrop.prototype = {
             self.UpimgBox.style.top = self.mouseMovePosition.height+'px';
         }
     },
-
+    scrollScale: function(){
+        var self = this;
+        window.addEventListener('onmousewheel',MouseScrollEvent,false);
+        function MouseScrollEvent(e){
+            alert(1);
+        }
+    }
 }
