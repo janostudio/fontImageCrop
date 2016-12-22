@@ -80,6 +80,6 @@ fontImageCrop.prototype = {
     },
     upCanvasEvent: function(){
         var self = this;
-        
+         
     }
 }
