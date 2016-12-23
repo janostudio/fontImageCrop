@@ -3,7 +3,7 @@
  * author:JJW
  * write-time:2016-12-20
  */
-function fontImageCrop(saveCallBack){
+function fontImageCrop(){
 	this.init();
 }
 
@@ -26,6 +26,10 @@ fontImageCrop.prototype = {
         width:'',
         height:''
     },
+    drawWidth:0,
+    drawHeight:0,
+    scrollWidth:180,
+    scrollHeight:240,
     init: function(){
 		var self = this;
 		self.fiCrop = document.getElementById("fiCrop");
@@ -116,7 +120,7 @@ fontImageCrop.prototype = {
         self.upimgWidth = self._img.width*180/300;
         self.upimgHeight = self._img.height*240/400;
         self.UpimgBox.style.display = "block";
-        self.ctxUp.drawImage(self._img,0,0,self.upimgWidth,self.upimgHeight,0,0,180,240);
+        self.ctxUp.drawImage(self._img,0,0,self.upimgWidth,self.upimgHeight,0,0,self.scrollWidth,self.scrollHeight);
         self.upCanvasEvent();
     },
     upCanvasEvent: function(){
@@ -134,30 +138,30 @@ fontImageCrop.prototype = {
         function MouseMoveEvent(e){
             self.mouseMovePosition.width = e.screenX - self.mouseInitPosition.width;
             self.mouseMovePosition.height = e.screenY - self.mouseInitPosition.height;
-            var drawWidth = parseInt(self.mouseMovePosition.width/300*self._img.width);
-            var drawHeight = parseInt(self.mouseMovePosition.height/400*self._img.height);
+            self.drawWidth = parseInt(self.mouseMovePosition.width/300*self._img.width);
+            self.drawHeight = parseInt(self.mouseMovePosition.height/400*self._img.height);
             //重新绘制顶部图片
-            if(drawWidth < 0){
-                drawWidth = 0;
-            }else if(drawWidth > 120*self._img.width/300){
-                drawWidth = 120*self._img.width/300;
+            if(self.drawWidth < 0){
+                self.drawWidth = 0;
+            }else if(self.drawWidth > 120*self._img.width/300){
+                self.drawWidth = 120*self._img.width/300;
             }
-            if(drawHeight < 0){
-                drawHeight = 0;
-            }else if(drawHeight > 160*self._img.height/400){
-                drawHeight = 160*self._img.height/400;
+            if(self.drawHeight < 0){
+                self.drawHeight = 0;
+            }else if(self.drawHeight > 160*self._img.height/400){
+                self.drawHeight = 160*self._img.height/400;
             }
-            self.ctxUp.drawImage(self._img,drawWidth,drawHeight,self.upimgWidth,self.upimgHeight,0,0,180,240);
+            self.ctxUp.drawImage(self._img,self.drawWidth,self.drawHeight,self.upimgWidth,self.upimgHeight,0,0,self.scrollWidth,self.scrollHeight);
             //顶部图片的位移
             if(self.mouseMovePosition.width < 0){
                 self.mouseMovePosition.width = 0;
-            }else if(self.mouseMovePosition.width>120){
-                self.mouseMovePosition.width = 120;
+            }else if(self.mouseMovePosition.width + self.scrollWidth > 300){
+                self.mouseMovePosition.width = 300 - self.scrollWidth;
             }
             if(self.mouseMovePosition.height < 0){
                 self.mouseMovePosition.height = 0;
-            }else if(self.mouseMovePosition.height>160){
-                self.mouseMovePosition.height = 160;
+            }else if(self.mouseMovePosition.height + self.scrollHeight>400){
+                self.mouseMovePosition.height = 400 - self.scrollHeight;
             }
             self.UpimgBox.style.left = self.mouseMovePosition.width+'px';
             self.UpimgBox.style.top = self.mouseMovePosition.height+'px';
@@ -165,9 +169,32 @@ fontImageCrop.prototype = {
     },
     scrollScale: function(){
         var self = this;
-        window.addEventListener('onmousewheel',MouseScrollEvent,false);
+        /*注册事件*/
+        if(document.addEventListener){
+            document.addEventListener('DOMMouseScroll',MouseScrollEvent,false);
+        }
+        self.UpimgBox.onmousewheel = MouseScrollEvent;
         function MouseScrollEvent(e){
-            alert(1);
+            var scrollDirection;
+            if(e.wheelDelta){//IE/Opera/Chrome
+                scrollDirection=e.wheelDelta;
+            }else if(e.detail){//Firefox
+                scrollDirection=e.detail;
+            }
+            if(scrollDirection > 0){
+                //缩小图片
+                self.scrollWidth = self.scrollWidth - 30;
+                self.scrollHeight = self.scrollHeight - 40;
+                self.upimgWidth = self.upimgWidth/180*self.scrollWidth;
+                self.upimgHeight = self.upimgHeight/240*self.scrollHeight;
+                self.UpimgBox.style.width = self.scrollWidth+30+'px';
+                self.UpimgBox.style.height = self.scrollHeight+40+'px';
+                //console.log(self.drawWidth,self.drawHeight,self.scrollWidth,self.scrollHeight,self.upimgWidth,self.upimgHeight);
+                self.ctxUp.drawImage(self._img,self.drawWidth,self.drawHeight,self.upimgWidth,self.upimgHeight,0,0,self.scrollWidth,self.scrollHeight);
+            }else{
+                //放大图片
+                console.log(2);
+            }      
         }
     }
 }
