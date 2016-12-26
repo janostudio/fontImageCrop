@@ -3,7 +3,7 @@
  * author:JJW
  * write-time:2016-12-20
  */
-function fontImageCrop(){
+function fontImageCrop(saveCallBack){
 	this.init();
 }
 
@@ -26,10 +26,6 @@ fontImageCrop.prototype = {
         width:'',
         height:''
     },
-    drawWidth:0,
-    drawHeight:0,
-    scrollWidth:180,
-    scrollHeight:240,
     init: function(){
 		var self = this;
 		self.fiCrop = document.getElementById("fiCrop");
@@ -120,7 +116,7 @@ fontImageCrop.prototype = {
         self.upimgWidth = self._img.width*180/300;
         self.upimgHeight = self._img.height*240/400;
         self.UpimgBox.style.display = "block";
-        self.ctxUp.drawImage(self._img,0,0,self.upimgWidth,self.upimgHeight,0,0,self.scrollWidth,self.scrollHeight);
+        self.ctxUp.drawImage(self._img,0,0,self.upimgWidth,self.upimgHeight,0,0,180,240);
         self.upCanvasEvent();
     },
     upCanvasEvent: function(){
@@ -138,9 +134,10 @@ fontImageCrop.prototype = {
         function MouseMoveEvent(e){
             self.mouseMovePosition.width = e.screenX - self.mouseInitPosition.width;
             self.mouseMovePosition.height = e.screenY - self.mouseInitPosition.height;
-            self.drawWidth = parseInt(self.mouseMovePosition.width/300*self._img.width);
-            self.drawHeight = parseInt(self.mouseMovePosition.height/400*self._img.height);
+            var drawWidth = parseInt(self.mouseMovePosition.width/300*self._img.width);
+            var drawHeight = parseInt(self.mouseMovePosition.height/400*self._img.height);
             //重新绘制顶部图片
+<<<<<<< HEAD
             if(self.drawWidth < 0){
                 self.drawWidth = 0;
             }else if(self.drawWidth > (300-self.scrollWidth)*self._img.width/300){
@@ -152,16 +149,29 @@ fontImageCrop.prototype = {
                 self.drawHeight = parseInt((400-self.scrollHeight)*self._img.height/400);
             }
             self.ctxUp.drawImage(self._img,self.drawWidth,self.drawHeight,self.upimgWidth,self.upimgHeight,0,0,180,240);
+=======
+            if(drawWidth < 0){
+                drawWidth = 0;
+            }else if(drawWidth > 120*self._img.width/300){
+                drawWidth = 120*self._img.width/300;
+            }
+            if(drawHeight < 0){
+                drawHeight = 0;
+            }else if(drawHeight > 160*self._img.height/400){
+                drawHeight = 160*self._img.height/400;
+            }
+            self.ctxUp.drawImage(self._img,drawWidth,drawHeight,self.upimgWidth,self.upimgHeight,0,0,180,240);
+>>>>>>> parent of ad701d6... 222
             //顶部图片的位移
             if(self.mouseMovePosition.width < 0){
                 self.mouseMovePosition.width = 0;
-            }else if(self.mouseMovePosition.width + self.scrollWidth > 300){
-                self.mouseMovePosition.width = 300 - self.scrollWidth;
+            }else if(self.mouseMovePosition.width>120){
+                self.mouseMovePosition.width = 120;
             }
             if(self.mouseMovePosition.height < 0){
                 self.mouseMovePosition.height = 0;
-            }else if(self.mouseMovePosition.height + self.scrollHeight>400){
-                self.mouseMovePosition.height = 400 - self.scrollHeight;
+            }else if(self.mouseMovePosition.height>160){
+                self.mouseMovePosition.height = 160;
             }
             self.UpimgBox.style.left = self.mouseMovePosition.width+'px';
             self.UpimgBox.style.top = self.mouseMovePosition.height+'px';
@@ -169,12 +179,9 @@ fontImageCrop.prototype = {
     },
     scrollScale: function(){
         var self = this;
-        /*注册事件*/
-        if(document.addEventListener){
-            document.addEventListener('DOMMouseScroll',MouseScrollEvent,false);
-        }
-        self.UpimgBox.onmousewheel = MouseScrollEvent;
+        window.addEventListener('onmousewheel',MouseScrollEvent,false);
         function MouseScrollEvent(e){
+<<<<<<< HEAD
             var scrollDirection;
             if(e.wheelDelta){//IE/Opera/Chrome
                 scrollDirection=e.wheelDelta;
@@ -216,6 +223,9 @@ fontImageCrop.prototype = {
             self.UpimgBox.style.width = self.scrollWidth+'px';
             self.UpimgBox.style.height = self.scrollHeight+'px';
             self.ctxUp.drawImage(self._img,self.drawWidth,self.drawHeight,self.upimgWidth,self.upimgHeight,0,0,180,240);     
+=======
+            alert(1);
+>>>>>>> parent of ad701d6... 222
         }
     }
 }
