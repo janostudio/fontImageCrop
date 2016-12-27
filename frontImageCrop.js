@@ -143,15 +143,15 @@ fontImageCrop.prototype = {
             //重新绘制顶部图片
             if(self.drawWidth < 0){
                 self.drawWidth = 0;
-            }else if(self.drawWidth > (300-self.scrollWidth)*self._img.width/300){
-                self.drawWidth = parseInt((300-self.scrollWidth)*self._img.width/300);
+            }else if(self.drawWidth > 120*self._img.width/300){
+                self.drawWidth = 120*self._img.width/300;
             }
             if(self.drawHeight < 0){
                 self.drawHeight = 0;
-            }else if(self.drawHeight > (400-self.scrollHeight)*self._img.height/400){
-                self.drawHeight = parseInt((400-self.scrollHeight)*self._img.height/400);
+            }else if(self.drawHeight > 160*self._img.height/400){
+                self.drawHeight = 160*self._img.height/400;
             }
-            self.ctxUp.drawImage(self._img,self.drawWidth,self.drawHeight,self.upimgWidth,self.upimgHeight,0,0,180,240);
+            self.ctxUp.drawImage(self._img,self.drawWidth,self.drawHeight,self.upimgWidth,self.upimgHeight,0,0,self.scrollWidth,self.scrollHeight);
             //顶部图片的位移
             if(self.mouseMovePosition.width < 0){
                 self.mouseMovePosition.width = 0;
@@ -181,37 +181,16 @@ fontImageCrop.prototype = {
                 //缩小图片
                 self.scrollWidth = self.scrollWidth - 30;
                 self.scrollHeight = self.scrollHeight - 40;
-                self.upimgWidth = self.upimgWidth/(self.scrollWidth+30)*self.scrollWidth;
-                self.upimgHeight = self.upimgHeight/(self.scrollHeight+40)*self.scrollHeight;
+                self.upimgWidth = self.upimgWidth/180*self.scrollWidth;
+                self.upimgHeight = self.upimgHeight/240*self.scrollHeight;
+                self.UpimgBox.style.width = self.scrollWidth+30+'px';
+                self.UpimgBox.style.height = self.scrollHeight+40+'px';
+                //console.log(self.drawWidth,self.drawHeight,self.scrollWidth,self.scrollHeight,self.upimgWidth,self.upimgHeight);
+                self.ctxUp.drawImage(self._img,self.drawWidth,self.drawHeight,self.upimgWidth,self.upimgHeight,0,0,self.scrollWidth,self.scrollHeight);
             }else{
-                //放大图片，当已经在边缘时，则向上移动                
-                self.scrollWidth = self.scrollWidth + 30;
-                self.scrollHeight = self.scrollHeight + 40;
-                self.upimgWidth = self.upimgWidth/(self.scrollWidth-30)*self.scrollWidth;
-                self.upimgHeight = self.upimgHeight/(self.scrollHeight-40)*self.scrollHeight;
-                if(self.mouseMovePosition.height + self.scrollHeight >400){
-                    //当右、下超出时
-                    self.mouseMovePosition.height = self.mouseMovePosition.height - 40;
-                    self.mouseMovePosition.width = self.mouseMovePosition.width - 30;
-                    self.UpimgBox.style.left = self.mouseMovePosition.width + 'px';
-                    self.UpimgBox.style.top = self.mouseMovePosition.height+'px';
-                    self.drawWidth = parseInt(self.mouseMovePosition.width/300*self._img.width);
-                    self.drawHeight = parseInt(self.mouseMovePosition.height/400*self._img.height);
-                    if(self.drawWidth < 0){
-                        self.drawWidth = 0;
-                    }else if(self.drawWidth > (300-self.scrollWidth)*self._img.width/300){
-                        self.drawWidth = parseInt((300-self.scrollWidth)*self._img.width/300);
-                    }
-                    if(self.drawHeight < 0){
-                        self.drawHeight = 0;
-                    }else if(self.drawHeight > (400-self.scrollHeight)*self._img.height/400){
-                        self.drawHeight = parseInt((400-self.scrollHeight)*self._img.height/400);
-                    }
-                }
-            } 
-            self.UpimgBox.style.width = self.scrollWidth+'px';
-            self.UpimgBox.style.height = self.scrollHeight+'px';
-            self.ctxUp.drawImage(self._img,self.drawWidth,self.drawHeight,self.upimgWidth,self.upimgHeight,0,0,180,240);     
+                //放大图片
+                console.log(2);
+            }      
         }
     }
 }
