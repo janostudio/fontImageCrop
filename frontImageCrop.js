@@ -26,6 +26,10 @@ fontImageCrop.prototype = {
         width:'',
         height:''
     },
+    drawWidth:0,
+    drawHeight:0,
+    scrollWidth:180,
+    scrollHeight:240,
     init: function(){
 		var self = this;
 		self.fiCrop = document.getElementById("fiCrop");
@@ -137,7 +141,6 @@ fontImageCrop.prototype = {
             var drawWidth = parseInt(self.mouseMovePosition.width/300*self._img.width);
             var drawHeight = parseInt(self.mouseMovePosition.height/400*self._img.height);
             //重新绘制顶部图片
-<<<<<<< HEAD
             if(self.drawWidth < 0){
                 self.drawWidth = 0;
             }else if(self.drawWidth > (300-self.scrollWidth)*self._img.width/300){
@@ -149,19 +152,6 @@ fontImageCrop.prototype = {
                 self.drawHeight = parseInt((400-self.scrollHeight)*self._img.height/400);
             }
             self.ctxUp.drawImage(self._img,self.drawWidth,self.drawHeight,self.upimgWidth,self.upimgHeight,0,0,180,240);
-=======
-            if(drawWidth < 0){
-                drawWidth = 0;
-            }else if(drawWidth > 120*self._img.width/300){
-                drawWidth = 120*self._img.width/300;
-            }
-            if(drawHeight < 0){
-                drawHeight = 0;
-            }else if(drawHeight > 160*self._img.height/400){
-                drawHeight = 160*self._img.height/400;
-            }
-            self.ctxUp.drawImage(self._img,drawWidth,drawHeight,self.upimgWidth,self.upimgHeight,0,0,180,240);
->>>>>>> parent of ad701d6... 222
             //顶部图片的位移
             if(self.mouseMovePosition.width < 0){
                 self.mouseMovePosition.width = 0;
@@ -181,7 +171,6 @@ fontImageCrop.prototype = {
         var self = this;
         window.addEventListener('onmousewheel',MouseScrollEvent,false);
         function MouseScrollEvent(e){
-<<<<<<< HEAD
             var scrollDirection;
             if(e.wheelDelta){//IE/Opera/Chrome
                 scrollDirection=e.wheelDelta;
@@ -223,9 +212,6 @@ fontImageCrop.prototype = {
             self.UpimgBox.style.width = self.scrollWidth+'px';
             self.UpimgBox.style.height = self.scrollHeight+'px';
             self.ctxUp.drawImage(self._img,self.drawWidth,self.drawHeight,self.upimgWidth,self.upimgHeight,0,0,180,240);     
-=======
-            alert(1);
->>>>>>> parent of ad701d6... 222
         }
     }
 }
